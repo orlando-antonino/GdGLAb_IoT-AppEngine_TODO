@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.gdglab.iot" 
+    android:versionCode="1"
+   	android:versionName="1.0" >
+
+
+	<uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!--
+     Creates a custom permission so only this app can receive its messages.
+
+     NOTE: the permission *must* be called PACKAGE.permission.C2D_MESSAGE,
+           where PACKAGE is the application's package name.
+    -->
+    <permission android:name="com.gdglab.iot.gcm.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.gdglab.iot.gcm.permission.C2D_MESSAGE" />
+
+    <!-- This app has permission to register and receive data message. -->
+    <uses-permission
+        android:name="com.google.android.c2dm.permission.RECEIVE" />
+    
+    <uses-sdk android:minSdkVersion="9" 
+        android:targetSdkVersion="19" />
+
+    <!-- The smallest screen this app works on is a phone.  The app will
+         scale its UI to larger screens but doesn't make good use of them
+         so allow the compatibility mode button to be shown (mostly because
+         this is just convenient for testing). -->
+    <supports-screens android:requiresSmallestWidthDp="320"
+            android:compatibleWidthLimitDp="480" />
+
+    <application android:label="@string/activity_sample_code"
+            android:icon="@drawable/ic_launcher"
+            android:hardwareAccelerated="true"  
+			android:allowBackup="true" 
+			android:configChanges="orientation|keyboardHidden|screenSize"
+			>
+
+        <activity android:name=".GdglabActivity"
+                android:label="@string/action_bar_usage"
+                android:theme="@style/Theme.AppCompat"
+                android:screenOrientation="portrait"
+                android:launchMode="singleTask"
+                >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--
+          WakefulBroadcastReceiver that will receive intents from GCM
+          services and hand them to the custom IntentService.
+
+          The com.google.android.c2dm.permission.SEND permission is necessary
+          so only GCM services can send data messages for the app.
+        -->
+        <receiver
+            android:name=".gcm.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <!-- Receives the actual messages. -->
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.gdglab.iot.gcm" />
+            </intent-filter>
+        </receiver>
+        <service android:name=".gcm.GcmIntentService" />
+        
+    </application>
+</manifest>

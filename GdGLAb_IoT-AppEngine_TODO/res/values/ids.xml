@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <item type="id" name="clear" />    
+  <item type="id" name="about" />
+  <item type="id" name="new_gcm_id" />
+  <item type="id" name="share" />
+</resources>
